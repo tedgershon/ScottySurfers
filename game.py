@@ -16,13 +16,12 @@ def onAppStart(app):
     app.stepsPerSecond = 30
     app.rad = 30
 
-
 def restartGame(app):
     app.instructions = True
     app.paused = True
     app.gameOver = False
     app.posX, app.posY = app.width/2, app.height-50
-    app.charHeight = 50
+    app.charHeight = 75
     app.taHeight = 150
     app.holdingDown = False
 
@@ -117,7 +116,7 @@ def onKeyHold(app, key):
         app.holdingDown = True
 
 def drawMainChar(app):
-    drawRect(app.posX, app.posY, 100, app.charHeight, align='center', fill='red')
+    drawImage(images.mainChar, app.posX, app.posY, align='center', width=100, height=app.charHeight)
 
 def randomNum(low, high):
     return random.randint(low, high)
@@ -171,7 +170,7 @@ def loadTA(app, taIndex):
 def loadBackground(app):
     background = [images.bk0, images.bk1, images.bk2, images.bk3,
                       images.bk4, images.bk5]
-    app.background = random.choice(background)
+    app.bg = random.choice(background)
 
 def drawGameOver(app):
     if app.gameOver == True:
@@ -181,7 +180,7 @@ def drawGameOver(app):
         drawLabel('Press "r" to restart game.', app.width/2, app.height-50, size=30, bold = True, fill = 'silver')
 
 def drawBackground(app):
-    drawImage(app.background, app.width/2, app.height/2, align='center', width=app.width, height=app.height)
+    drawImage(app.bg, app.width/2, app.height/2, align='center', width=app.width, height=app.height)
     
 
 def redrawAll(app):
