@@ -185,6 +185,7 @@ def loadNextTA(app):
     elif currentTA in [images.inst1, images.inst2]:
         app.TAPositions.append((app.width/2, 0))
         app.currentTAs.append(currentTA)
+        app.stepsPerSecond = 5
     else:
         TAx = random.randrange(3)*200+100
         app.TAPositions.append((TAx, 0))  
