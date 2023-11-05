@@ -13,13 +13,13 @@ def onAppStart(app):
     app.height = 700
     app.laneLength = app.width/3
     restartGame(app)
-    app.stepsPerSecond = 30
     app.rad = 30
 
 
 def restartGame(app):
     app.instructions = True
     app.paused = True
+    app.stepsPerSecond = 30
     app.gameOver = False
     app.posX, app.posY = app.width/2, app.height-50
     app.charHeight = 50
@@ -157,7 +157,12 @@ def drawTA(app):
     for i in range(len(app.TAPositions)):
         currentTA = app.currentTAs[i]
         TAx, TAy = app.TAPositions[i]
-        drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)
+        if currentTA in [images.taH1, images.taH2, images.taH3]:
+            for i in range(3):
+                TAx = i*200+100
+                drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)    
+        else:
+            drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)
 
 def loadTAs(app):
     #creates a list of TA objects (formatted in jpg)
