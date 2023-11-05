@@ -1,10 +1,10 @@
 from cmu_graphics import *
 import random
 import time
+import images
 '''
 Stuff to Fix/Add if time at end:
 - make main character delay but not ta's
-- show more directly that the character jumps over the ta
 '''
 
 def onAppStart(app):
@@ -76,7 +76,7 @@ def moveMainChar(app, direction):
             app.posX += app.laneLength
 
 def jumpMainChar(app):
-    jumpPercentChoices = [1, 1, 1, 1, 1, 1, 1, 0, 0.3, 0.2, 0.5]
+    jumpPercentChoices = [1, 1, 1, 1, 1, 1, 1, 0.1, 0.3, 0.2, 0.5]
     jumpPercent = random.choice(jumpPercentChoices)
     for i in range(len(app.TAPositions)):
         TAx, TAy = app.TAPositions[i]
@@ -119,21 +119,6 @@ def onKeyHold(app, key):
     if 'down' in key:
         app.holdingDown = True
 
-def onMousePress(app, mouseX, mouseY):
-    pass
-
-def onMouseRelease(app, mouseX, mouseY):
-    pass
-
-def onMouseDrag(app, mouseX, mouseY):
-    pass
-
-def onMouseMove(app, mouseX, mouseY):
-    pass
-
-def onResize(app):
-    pass
-
 def drawMainChar(app):
     drawRect(app.posX, app.posY, 100, app.charHeight, align='center', fill='red')
 
@@ -169,11 +154,20 @@ def hasCollided(app):
                 app.paused = True
 
 def drawTA(app):
-    for TAx, TAy in app.TAPositions:
-        drawRect(TAx, TAy, 180, app.taHeight, align='center')
+    for i in range(len(app.TAPositions)):
+        currentTA = app.currentTAs[i]
+        TAx, TAy = app.TAPositions[i]
+        drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)
 
 def loadTAs(app):
-    app.TAList = ['ta1', 'ta2', 'ta3']
+    #creates a list of TA objects (formatted in jpg)
+    #TAs are initialized / "drawn" with the drawTA() function
+    app.TAList = [images.inst1, images.inst2, images.taH1,
+                   images.taH2, images.taH3, images.ta1,
+                   images.ta2, images.ta3, images.ta4,
+                   images.ta5, images.ta6, images.ta7,
+                   images.ta8, images.ta9, images.ta10,
+                   images.ta11, images.ta12]
 
 def loadNextTA(app):
     app.nextTAIndex = random.randrange(len(app.TAList))
@@ -188,6 +182,7 @@ def drawGameOver(app):
     colors = ['red', 'orange', 'green', 'yellow', 'purple', 'blue', 'pink']
     fillColor = random.choice(colors)
     if app.gameOver == True:
+        time.sleep(0.25)
         drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
         drawLabel('GAME OVER', app.width/2, app.height/2-75, size = 70, bold = True, fill = fillColor, border = 'black')
         drawLabel('Press "r" to restart game.', app.width/2, app.height-50, size=30, bold = True, fill = 'silver')
