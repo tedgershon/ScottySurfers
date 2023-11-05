@@ -1,49 +1,61 @@
 from cmu_graphics import *
 import random
 import time
-### Controller
+'''
+Stuff to Fix/Add if time at end:
+- make main character delay but not ta's
+'''
 
 def onAppStart(app):
     # Required constants
-    app.TAx = 0
-    app.TAy = 0
+    app.TAPositions = [(0,0)]
     app.width = 600
     app.height = 700
     app.laneLength = app.width/3
     restartGame(app)
     app.stepsPerSecond = 30
-    app.gameOver = False
     app.rad = 30
-    app.taHeight
 
-    loadTAs(app)
-    loadNextTA(app)
 
 def restartGame(app):
     app.instructions = True
     app.paused = True
+    app.gameOver = False
     app.posX, app.posY = app.width/2, app.height-50
-    app.charHeight = 30
-    app.taHeight = 40
+    app.charHeight = 50
+    app.taHeight = 150
     app.holdingDown = False
+
+    app.currentTAs = []
+
+    loadTAs(app)
+    loadNextTA(app)
+    app.numSteps = 0
 
 def onStep(app):
     if not app.paused:
         takeStep(app)
+        if app.numSteps % 80 == 0:
+            loadNextTA(app) 
+    hasCollided(app)
         
 def takeStep(app):
     if app.gameOver == False and app.instructions == False:
         moveTA(app, +5)
+    app.numSteps += 1
 
 def moveTA(app, drow):
-    app.TAy += drow
+    for i in range(len(app.TAPositions)):
+        TAx, TAy = app.TAPositions[i]
+        TAy += drow
+        app.TAPositions[i] = (TAx, TAy)
 
 def moveMainChar(app, direction):
     initX = app.posX
     delayTime = abs(randomNum(-10,20))/10
     if app.holdingDown == True:
         delayTime = 0
-    print(delayTime)
+    
     if direction == 'left' and app.width/2-app.laneLength < app.posX:
         if app.posX > initX - app.laneLength:
             time.sleep(delayTime)
@@ -93,7 +105,7 @@ def onResize(app):
     pass
 
 def drawMainChar(app):
-    drawCircle(app.posX, app.posY, app.rad)
+    drawRect(app.posX, app.posY, 100, app.charHeight, align='center')
 
 def randomNum(low, high):
     return random.randint(low, high)
@@ -104,15 +116,18 @@ def drawInstructions(app):
         drawLabel("INSTRUCTIONS", app.width/2, 50, size = 50, bold = True, fill = 'white')
         drawLabel("Press 'h' to open and close instructions", app.width/2, app.height-20,
                   size=20, fill='white')
+
 def distance(x1, y1, x2, y2):
     return ((x2-x1)**2+(y2-y1)**2)**(1/2)
 
 def hasCollided(app):
-    if distance(app.posX, app.posY, app.taX, app.taY)<=(app.taHeight+app.charHeight):
-        app.gameOver = True
+    for TAx, TAy in app.TAPositions:
+        if distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
+            app.gameOver = True
 
 def drawTA(app):
-     drawRect(app.TAx, app.TAy, 180, 180, align='center')
+    for TAx, TAy in app.TAPositions:
+        drawRect(TAx, TAy, 180, app.taHeight, align='center')
 
 def loadTAs(app):
     app.TAList = ['ta1', 'ta2', 'ta3']
@@ -122,20 +137,22 @@ def loadNextTA(app):
     loadTA(app, app.nextTAIndex)
 
 def loadTA(app, taIndex):
-    app.TAx = random.randrange(3)*200+100
-    app.ta = app.TAList[taIndex]
+    TAx = random.randrange(3)*200+100
+    app.TAPositions.append((TAx, 0))
+    app.currentTAs.append(app.TAList[taIndex])
 
 def drawGameOver(app):
     if app.gameOver == True:
         drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
-        drawLabel('GAME OVER', 200, 200, size = 50, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
-        drawLabel('Press "r" to restart game. Max score is currently: ' + str(app.maxScore), 200, 30, size=14, bold = True, fill = 'purple')
+        drawLabel('GAME OVER', app.width/2, app.height/2, size = 55, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
+        drawLabel('Press "r" to restart game.', app.width/2, app.height-50, size=30, bold = True, fill = 'silver')
 
 def redrawAll(app):
     drawMainChar(app)
     drawTA(app)
 
     drawInstructions(app)
+    drawGameOver(app)
 
 ### Main
 def main():
