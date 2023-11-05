@@ -8,7 +8,6 @@ def onAppStart(app):
     app.y = 0
     app.width = 600
     app.height = 800
-    app.posX, app.posY = app.width/2, app.height/2
     app.laneLength = app.width/3
     app.restartGame(app)
     app.stepsPerSecond = 30
@@ -16,6 +15,7 @@ def onAppStart(app):
 def restartGame(app):
     app.instructions = True
     app.paused = True
+    app.posX, app.posY = app.width/2, app.height/2
 
 def onStep(app):
     if not app.paused:
@@ -30,16 +30,22 @@ def moveTA(app, drow):
 
 
 def onKeyPress(app, key):
-    if key == 's' and not app.paused:
-        takeStep(app)
-    elif key == 'p':
+    if key == 'p':
         app.paused = not app.paused
+    elif key == 'h':
+        app.instructions = True
+    elif key == 'q':
+        app.gameOver = True
+    elif key == 'r':
+        restartGame(app)
+    
         
 def onKeyRelease(app, key):
     pass
 
 def onKeyHold(app, key):
-    pass
+    if key == 'left':
+        app.posX = app.posX-5
 
 def onMousePress(app, mouseX, mouseY):
     pass
@@ -55,14 +61,6 @@ def onMouseMove(app, mouseX, mouseY):
 
 def onResize(app):
     pass
-
-### View
-def buttons(xpos,ypos,colour,text,width,height):
-    drawRect(xpos, ypos, width, height, fill = colour)
-    drawLabel(msg, xpos+25, ypos+12, font = text)
-
-def gameOver():
-    while gameOver == False:
 
 def drawMainChar(app):
     pass
@@ -87,9 +85,8 @@ def gameOver(app):
     if app.gameOver == True:
         drawLabel('GAME OVER', 200, 200, size = 50, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
         drawLabel('Press "r" to restart game. Max score is currently: ' + str(app.maxScore), 200, 30, size=14, bold = True, fill = 'purple')
-        drawLabel('HIGH SCORES', 75,200, size = 18, bold = True, fill='silver')
-        for i in range(len(app.highScores)):
-            drawLabel(str(app.highScores[i]), 50,220+i*20, size = 14, bold = True, fill='silver')
+    else:
+        pass
 
 def redrawAll(app):
     drawMainChar(app)
