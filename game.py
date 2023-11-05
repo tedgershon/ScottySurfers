@@ -21,7 +21,7 @@ def restartGame(app):
     app.paused = True
     app.gameOver = False
     app.posX, app.posY = app.width/2, app.height-50
-    app.charHeight = 75
+    app.charHeight = 100
     app.taHeight = 150
     app.holdingDown = False
 
