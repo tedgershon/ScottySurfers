@@ -1,6 +1,7 @@
 from cmu_graphics import *
 import random
 import time
+import images
 '''
 Stuff to Fix/Add if time at end:
 - make main character delay but not ta's
@@ -140,13 +141,22 @@ def hasCollided(app):
     for TAx, TAy in app.TAPositions:
         if distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
             app.gameOver = True
-
+            
 def drawTA(app):
-    for TAx, TAy in app.TAPositions:
-        drawRect(TAx, TAy, 180, app.taHeight, align='center')
+    for i in range(len(app.TAPositions)):
+        currentTA = app.currentTAs[i]
+        TAx, TAy = app.TAPositions[i]
+        drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)
 
 def loadTAs(app):
-    app.TAList = ['ta1', 'ta2', 'ta3']
+    #creates a list of TA objects (formatted in jpg)
+    #TAs are initialized / "drawn" with the drawTA() function
+    app.TAList = [images.inst1, images.inst2, images.taH1,
+                   images.taH2, images.taH3, images.ta1,
+                   images.ta2, images.ta3, images.ta4,
+                   images.ta5, images.ta6, images.ta7,
+                   images.ta8, images.ta9, images.ta10,
+                   images.ta11, images.ta12]
 
 def loadNextTA(app):
     app.nextTAIndex = random.randrange(len(app.TAList))
