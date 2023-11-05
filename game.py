@@ -170,13 +170,9 @@ def loadTAs(app):
                    images.ta11, images.ta12]
 
 def loadNextTA(app):
-    app.nextTAIndex = random.randrange(len(app.TAList))
-    loadTA(app, app.nextTAIndex)
-
-def loadTA(app, taIndex):
     TAx = random.randrange(3)*200+100
     app.TAPositions.append((TAx, 0))
-    app.currentTAs.append(app.TAList[taIndex])
+    app.currentTAs.append(random.choice(app.TAList))
 
 def drawGameOver(app):
     colors = ['red', 'orange', 'green', 'yellow', 'purple', 'blue', 'pink']
