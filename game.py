@@ -43,6 +43,8 @@ def onStep(app):
 def takeStep(app):
     if app.gameOver == False and app.instructions == False:
         moveTA(app, +5)
+    if app.posY != app.height-50:
+        app.posY +=10
     app.numSteps += 1
 
 def moveTA(app, drow):
@@ -77,14 +79,15 @@ def jumpMainChar(app):
             (TAy + distTAChar>=app.posY)):
             jumpHeight = jumpPercent*(distTAChar+app.taHeight/2+app.charHeight/2)
             print(jumpPercent)
+            print(jumpHeight)
             app.posY -= jumpHeight
+            
             
             if distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
                 app.gameOver = True
             else:
                 app.TAPositions.pop(i)
-                app.currentTAs.pop(i)
-                app.posY = app.height-50 
+                app.currentTAs.pop(i) 
             break
              
 
@@ -139,6 +142,12 @@ def drawInstructions(app):
         drawLabel("INSTRUCTIONS", app.width/2, 50, size = 50, bold = True, fill = 'white')
         drawLabel("Press 'h' to open and close instructions", app.width/2, app.height-20,
                   size=20, fill='white')
+        drawLabel("YOU GOT CAUGHT WITH AN AIV", app.width/2, 150, size = 25, bold = True, fill = 'white')
+        drawLabel("Dodge the TAs. Be careful!", app.width/2, 180, size = 25, bold = True, fill = 'white')
+        drawLabel("Use the left and right keys to move. Use the up key to jump", app.width/2, 220, size = 20, bold = True, fill = 'white')
+        drawLabel("Press 'p' to pause/unpause game", app.width/2, 250, size = 20, bold = True, fill = 'white')
+        drawLabel("Press 'h' to toggle instructions page", app.width/2, 280, size = 20, bold = True, fill = 'white')
+        drawLabel("P.S. There may be some hidden tricks in game :)", 20, 500, rotateAngle = 90, size = 10, bold = True, fill = 'white')
 
 def distance(x1, y1, x2, y2):
     return ((x2-x1)**2+(y2-y1)**2)**(1/2)
