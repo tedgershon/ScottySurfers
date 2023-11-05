@@ -1,5 +1,6 @@
 from cmu_graphics import *
 import random
+import time
 ### Controller
 
 def onAppStart(app):
@@ -11,6 +12,7 @@ def onAppStart(app):
     app.laneLength = app.width/3
     restartGame(app)
     app.stepsPerSecond = 30
+    app.gameOver = False
 
 def restartGame(app):
     app.instructions = True
@@ -28,6 +30,20 @@ def takeStep(app):
 def moveTA(app, drow):
     app.taTop = app.taTop + drow
 
+def moveMainChar(app, direction):
+    initX = app.posX
+    delayTime = randomNum(1,5)/10
+    print(delayTime)
+    if direction == 'left' and app.width/2-app.laneLength < app.posX:
+        if app.posX > initX - app.laneLength:
+            time.sleep(delayTime)
+            app.posX -= app.laneLength      
+            
+    if direction == 'right' and app.posX < app.width/2+app.laneLength:
+        if app.posX < initX + app.laneLength:
+            time.sleep(delayTime)
+            app.posX += app.laneLength
+            
 
 def onKeyPress(app, key):
     if key == 'p':
@@ -38,14 +54,17 @@ def onKeyPress(app, key):
         app.gameOver = True
     elif key == 'r':
         restartGame(app)
-    
+    elif key == 'left':
+        moveMainChar(app, key)
+    elif key == 'right':
+        moveMainChar(app, key)   
         
 def onKeyRelease(app, key):
     pass
 
 def onKeyHold(app, key):
     if 'left' in key:
-        app.posX -= 5
+        pass
 
 def onMousePress(app, mouseX, mouseY):
     pass
