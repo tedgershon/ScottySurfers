@@ -143,12 +143,17 @@ def distance(x1, y1, x2, y2):
 
 def hasCollided(app):
     if not app.paused:
-        for TAx, TAy in app.TAPositions:
-            if distance(app.posX, app.posY, TAx, TAy)==(app.taHeight/2+app.charHeight/2):
+        for i in range(len(app.TAPositions)):
+            TAx, TAy = app.TAPositions[i]
+            if app.currentTAs[i] in [images.inst1, images.inst2]:
+                taHeight = app.height
+            else:
+                taHeight = app.taHeight
+            if distance(app.posX, app.posY, TAx, TAy)==(taHeight/2+app.charHeight/2):
                 app.gameOver = True
                 app.ranIntoTA = True
                 app.paused = True
-            elif distance(app.posX, app.posY, TAx, TAy)<(app.taHeight/2+app.charHeight/2):
+            elif distance(app.posX, app.posY, TAx, TAy)<(taHeight/2+app.charHeight/2):
                 app.gameOver = True
                 app.jumpIntoTA = True
                 app.paused = True
