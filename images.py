@@ -1,3 +1,4 @@
+from cmu_graphics import *
 from PIL import Image
 
 # this file contains all images used in background, obstacles, or characters
