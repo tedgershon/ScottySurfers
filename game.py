@@ -4,7 +4,6 @@ import time
 '''
 Stuff to Fix/Add if time at end:
 - make main character delay but not ta's
-- show more directly that the character jumps over the ta
 '''
 
 def onAppStart(app):
@@ -70,7 +69,7 @@ def moveMainChar(app, direction):
             app.posX += app.laneLength
 
 def jumpMainChar(app):
-    jumpPercentChoices = [1, 1, 1, 1, 1, 1, 1, 0, 0.3, 0.2, 0.5]
+    jumpPercentChoices = [1, 1, 1, 1, 1, 1, 1, 0.1, 0.3, 0.2, 0.5]
     jumpPercent = random.choice(jumpPercentChoices)
     for i in range(len(app.TAPositions)):
         TAx, TAy = app.TAPositions[i]
@@ -114,21 +113,6 @@ def onKeyRelease(app, key):
 def onKeyHold(app, key):
     if 'down' in key:
         app.holdingDown = True
-
-def onMousePress(app, mouseX, mouseY):
-    pass
-
-def onMouseRelease(app, mouseX, mouseY):
-    pass
-
-def onMouseDrag(app, mouseX, mouseY):
-    pass
-
-def onMouseMove(app, mouseX, mouseY):
-    pass
-
-def onResize(app):
-    pass
 
 def drawMainChar(app):
     drawRect(app.posX, app.posY, 100, app.charHeight, align='center', fill='red')
@@ -175,6 +159,7 @@ def loadTA(app, taIndex):
 
 def drawGameOver(app):
     if app.gameOver == True:
+        time.sleep(0.25)
         drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
         drawLabel('GAME OVER', app.width/2, app.height/2, size = 55, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
         drawLabel('Press "r" to restart game.', app.width/2, app.height-50, size=30, bold = True, fill = 'silver')
