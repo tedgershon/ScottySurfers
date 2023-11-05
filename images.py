@@ -5,8 +5,22 @@ from PIL import Image
 # images formatted as jpg and referenced later in "TAList" in game.py
 
 # Backgrounds
+bk0 = Image.open('images/bkgd0.jpg')
+bk0 = CMUImage(bk0)
+bk1 = Image.open('images/bkgd1.jpg')
+bk1 = CMUImage(bk1)
+bk2 = Image.open('images/bkgd2.jpg')
+bk2 = CMUImage(bk2)
+bk3 = Image.open('images/bkgd3.jpg')
+bk3 = CMUImage(bk3)
+bk4 = Image.open('images/bkgd4.jpg')
+bk4 = CMUImage(bk4)
+bk5 = Image.open('images/bkgd5.jpg')
+bk5 = CMUImage(bk5)
 
 # Characters
+mainChar = Image.opn('images/mainChar.jpg')
+mainChar = CMUImage(mainChar)
 
 # Obstacles
     #instructors
