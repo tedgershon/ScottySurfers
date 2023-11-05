@@ -2,10 +2,6 @@ from cmu_graphics import *
 import random
 import time
 import images
-'''
-Stuff to Fix/Add if time at end:
-- make main character delay but not ta's
-'''
 
 def onAppStart(app):
     # Required constants
@@ -15,20 +11,20 @@ def onAppStart(app):
     restartGame(app)
     app.rad = 30
 
-
 def restartGame(app):
     app.instructions = True
     app.paused = True
     app.stepsPerSecond = 30
     app.gameOver = False
     app.posX, app.posY = app.width/2, app.height-50
-    app.charHeight = 50
+    app.charHeight = 100
     app.taHeight = 150
     app.holdingDown = False
 
     app.currentTAs = []
     app.TAPositions = []
 
+    loadBackground(app)
     loadTAs(app)
     loadNextTA(app)
     app.numSteps = 0
@@ -120,7 +116,7 @@ def onKeyHold(app, key):
         app.holdingDown = True
 
 def drawMainChar(app):
-    drawRect(app.posX, app.posY, 100, app.charHeight, align='center', fill='red')
+    drawImage(images.mainChar, app.posX, app.posY, align='center', width=100, height=app.charHeight)
 
 def randomNum(low, high):
     return random.randint(low, high)
@@ -213,6 +209,7 @@ def drawBackground(app):
     drawImage(app.bg, app.width/2, app.height/2, align='center', width=app.width, height=app.height)
 
 def redrawAll(app):
+    drawBackground(app)
     drawTA(app)
     drawMainChar(app)
 
