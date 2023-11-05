@@ -13,13 +13,13 @@ def onAppStart(app):
     app.height = 700
     app.laneLength = app.width/3
     restartGame(app)
+    app.stepsPerSecond = 30
     app.rad = 30
 
 
 def restartGame(app):
     app.instructions = True
     app.paused = True
-    app.stepsPerSecond = 30
     app.gameOver = False
     app.posX, app.posY = app.width/2, app.height-50
     app.charHeight = 50
@@ -29,22 +29,17 @@ def restartGame(app):
     app.currentTAs = []
     app.TAPositions = []
 
+    loadBackground(app)
     loadTAs(app)
     loadNextTA(app)
     app.numSteps = 0
-    app.ranIntoTA = False
-    app.jumpIntoTA = False
-    app.ranMessages = ['You dumbass why you tryna run into TAs', 'Run AWAY from the TAs, not INTO them', "Tryna get kicked out of CMU?", "So depressed that you don't care if you get an AIV?"]
-    app.ranMessage = random.choice(app.ranMessages)
-    app.jumpMessages = ['Jump OVER the TAs, not onto them', 'They were just too tall', "Go hit the gym, your legs are too weak", 'Your TAs caught you! AIV Incoming :DDDDD']
-    app.jumpMessage = random.choice(app.jumpMessages)
 
 def onStep(app):
     if not app.paused:
         takeStep(app)
         if app.numSteps % 80 == 0:
             loadNextTA(app) 
-        hasCollided(app)
+    hasCollided(app)
         
 def takeStep(app):
     if app.gameOver == False and app.instructions == False:
@@ -89,7 +84,9 @@ def jumpMainChar(app):
             app.posY -= jumpHeight
             
             
-            if not distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
+            if distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
+                app.gameOver = True
+            else:
                 app.TAPositions.pop(i)
                 app.currentTAs.pop(i) 
             break
@@ -142,27 +139,15 @@ def distance(x1, y1, x2, y2):
     return ((x2-x1)**2+(y2-y1)**2)**(1/2)
 
 def hasCollided(app):
-    if not app.paused:
-        for TAx, TAy in app.TAPositions:
-            if distance(app.posX, app.posY, TAx, TAy)==(app.taHeight/2+app.charHeight/2):
-                app.gameOver = True
-                app.ranIntoTA = True
-                app.paused = True
-            elif distance(app.posX, app.posY, TAx, TAy)<(app.taHeight/2+app.charHeight/2):
-                app.gameOver = True
-                app.jumpIntoTA = True
-                app.paused = True
+    for TAx, TAy in app.TAPositions:
+        if distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
+            app.gameOver = True
 
 def drawTA(app):
     for i in range(len(app.TAPositions)):
         currentTA = app.currentTAs[i]
         TAx, TAy = app.TAPositions[i]
-        if currentTA in [images.taH1, images.taH2, images.taH3]:
-            for i in range(3):
-                TAx = i*200+100
-                drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)    
-        else:
-            drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)
+        drawImage(currentTA, TAx, TAy, align='center', width=180, height=app.taHeight)
 
 def loadTAs(app):
     #creates a list of TA objects (formatted in jpg)
@@ -175,26 +160,32 @@ def loadTAs(app):
                    images.ta11, images.ta12]
 
 def loadNextTA(app):
+    app.nextTAIndex = random.randrange(len(app.TAList))
+    loadTA(app, app.nextTAIndex)
+
+def loadTA(app, taIndex):
     TAx = random.randrange(3)*200+100
     app.TAPositions.append((TAx, 0))
-    app.currentTAs.append(random.choice(app.TAList))
+    app.currentTAs.append(app.TAList[taIndex])
+
+def loadBackground(app):
+    background = [images.bk0, images.bk1, images.bk2, images.bk3,
+                      images.bk4, images.bk5]
+    app.background = random.choice(background)
 
 def drawGameOver(app):
-    colors = ['red', 'orange', 'green', 'yellow', 'purple', 'blue', 'pink']
-    fillColor = random.choice(colors)
     if app.gameOver == True:
         time.sleep(0.25)
         drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
-        drawLabel('GAME OVER', app.width/2, app.height/2-75, size = 70, bold = True, fill = fillColor, border = 'black')
+        drawLabel('GAME OVER', app.width/2, app.height/2, size = 55, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
         drawLabel('Press "r" to restart game.', app.width/2, app.height-50, size=30, bold = True, fill = 'silver')
-        if app.ranIntoTA == True:
-            drawLabel(app.ranMessage, app.width/2, app.height/2, size = 25, bold = True, fill = 'white')
-            drawLabel('Dodge the TAs you idiot', app.width/2, app.height/2 + 100, size = 25, bold = True, fill = 'white')
-        if app.jumpIntoTA == True:
-            drawLabel(app.jumpMessage, app.width/2, app.height/2, size = 25, bold = True, fill = 'white')
-            drawLabel("Dodge the TAs you idiot", app.width/2, app.height/2 +125, size = 25, bold = True, fill = 'white')
+
+def drawBackground(app):
+    drawImage(app.background, app.width/2, app.height/2, align='center', width=app.width, height=app.height)
+    
 
 def redrawAll(app):
+    drawBackground(app)
     drawTA(app)
     drawMainChar(app)
 
