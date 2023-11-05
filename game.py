@@ -13,11 +13,15 @@ def onAppStart(app):
     restartGame(app)
     app.stepsPerSecond = 30
     app.gameOver = False
+    app.rad = 30
+    app.taHeight
 
 def restartGame(app):
     app.instructions = True
     app.paused = True
     app.posX, app.posY = app.width/2, app.height-50
+    app.charHeight = 30
+    app.taHeight = 40
 
 def onStep(app):
     if not app.paused:
@@ -32,7 +36,7 @@ def moveTA(app, drow):
 
 def moveMainChar(app, direction):
     initX = app.posX
-    delayTime = randomNum(1,5)/10
+    delayTime = randomNum(1,10)/10
     print(delayTime)
     if direction == 'left' and app.width/2-app.laneLength < app.posX:
         if app.posX > initX - app.laneLength:
@@ -82,7 +86,7 @@ def onResize(app):
     pass
 
 def drawMainChar(app):
-    drawCircle(app.posX, app.posY, 30)
+    drawCircle(app.posX, app.posY, app.rad)
 
 def randomNum(low, high):
     return random.randint(low, high)
@@ -93,6 +97,12 @@ def drawInstructions(app):
         drawLabel("INSTRUCTIONS", app.width/2, 50, size = 50, bold = True, fill = 'white')
         drawLabel("Press 'h' to open and close instructions", app.width/2, app.height-20,
                   size=20, fill='white')
+def distance(x1, y1, x2, y2):
+    return ((x2-x1)**2+(y2-y1)**2)**(1/2)
+
+def hasCollided(app):
+    if distance(app.posX, app.posY, app.taX, app.taY)<=(app.taHeight+app.charHeight):
+        app.gameOver = True
 
 def gameOver(app):
     if app.gameOver == True:
