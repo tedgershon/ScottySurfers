@@ -89,17 +89,14 @@ def randomNum(low, high):
 
 def drawInstructions(app):
     if app.instructions == True:
-        drawLabel("INSTRUCTIONS", 200, 50, size = 50, bold = True, fill = 'white')
-        drawLabel('If the left arrow is pressed, it moves the piece to left', 200,100,size=14, bold = True, fill = 'white')
-        drawLabel('If the right arrow is pressed, it moves the piece to right', 200,130,size=14, bold = True, fill = 'white')
-        drawLabel('If the up arrow is pressed, it rotates the piece clockwise', 200,160,size=14, bold = True, fill = 'white')
-        drawLabel('If the down arrow is pressed, moves the piece down', 200,190,size=14, bold = True, fill = 'white')
-        drawLabel('If the e key is pressed, it rotates the piece counter-clockwise', 200,220,size=14, bold = True, fill = 'white')
-        drawLabel('If the s key is pressed, it takes a step in the game', 200,250,size=14, bold = True, fill = 'white')
-        drawLabel('Press h to leave instructions and continue game', 200,340, size = 14, bold = True, fill = 'cyan')
+        drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
+        drawLabel("INSTRUCTIONS", app.width/2, 50, size = 50, bold = True, fill = 'white')
+        drawLabel("Press 'h' to open and close instructions", app.width/2, app.height-20,
+                  size=20, fill='white')
 
 def gameOver(app):
     if app.gameOver == True:
+        drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
         drawLabel('GAME OVER', 200, 200, size = 50, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
         drawLabel('Press "r" to restart game. Max score is currently: ' + str(app.maxScore), 200, 30, size=14, bold = True, fill = 'purple')
 
