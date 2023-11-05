@@ -8,7 +8,6 @@ Stuff to Fix/Add if time at end:
 
 def onAppStart(app):
     # Required constants
-    app.TAPositions = [(0,0)]
     app.width = 600
     app.height = 700
     app.laneLength = app.width/3
@@ -27,6 +26,7 @@ def restartGame(app):
     app.holdingDown = False
 
     app.currentTAs = []
+    app.TAPositions = []
 
     loadTAs(app)
     loadNextTA(app)
@@ -76,9 +76,9 @@ def onKeyPress(app, key):
         app.gameOver = True
     elif key == 'r':
         restartGame(app)
-    elif key == 'left':
+    elif key == 'left' and not app.paused:
         moveMainChar(app, key)
-    elif key == 'right':
+    elif key == 'right' and not app.paused:
         moveMainChar(app, key)   
         
 def onKeyRelease(app, key):
