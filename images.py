@@ -19,7 +19,7 @@ bk5 = Image.open('images/bkgd5.jpg')
 bk5 = CMUImage(bk5)
 
 # Characters
-mainChar = Image.opn('images/mainChar.jpg')
+mainChar = Image.open('images/mainChar.jpg')
 mainChar = CMUImage(mainChar)
 
 # Obstacles
