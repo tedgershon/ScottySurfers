@@ -5,8 +5,8 @@ import time
 
 def onAppStart(app):
     # Required constants
-    app.x = 0
-    app.y = 0
+    app.TAx = 0
+    app.TAy = 0
     app.width = 600
     app.height = 700
     app.laneLength = app.width/3
@@ -22,6 +22,7 @@ def restartGame(app):
     app.posX, app.posY = app.width/2, app.height-50
     app.charHeight = 30
     app.taHeight = 40
+    app.holdingShift = False
 
 def onStep(app):
     if not app.paused:
@@ -32,11 +33,13 @@ def takeStep(app):
         moveTA(app, +5)
 
 def moveTA(app, drow):
-    app.taTop = app.taTop + drow
+    app.TAy += drow
 
 def moveMainChar(app, direction):
     initX = app.posX
-    delayTime = randomNum(1,10)/10
+    delayTime = abs(randomNum(-10,20))/10
+    if app.holdingShift == True:
+        delayTime = 0
     print(delayTime)
     if direction == 'left' and app.width/2-app.laneLength < app.posX:
         if app.posX > initX - app.laneLength:
@@ -64,11 +67,14 @@ def onKeyPress(app, key):
         moveMainChar(app, key)   
         
 def onKeyRelease(app, key):
-    pass
+    if 'shift' == key:
+        app.holdingShift = False
 
 def onKeyHold(app, key):
     if 'left' in key:
         pass
+    if 'p' in key:
+        app.holdingP = True
 
 def onMousePress(app, mouseX, mouseY):
     pass
