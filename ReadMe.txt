@@ -1,6 +1,6 @@
+**Project Description**
+We created a realistic 2D game where the main character, a student at CMU, has committed an academic integrity violation (or AIV). Now, the character must weave through CMU campus halls at Tepper, Shatz, Gates, and more while avoiding TAs and instructors eager to write up their dishonest behavior. In avoiding their perpetrators, the main character can move laterally (left and right) through the three lanes and can also jump over TAs and instructors. This game is modeled after the popular game Subway Surfers, with much of the functionality based off of the mobile app.
 
-We created a game where the main character has received an AIV and needs to stay away from the TAs and instructors. 
-The main character can move left and right through three lanes, and can also jump over TAs and instructors. 
-Similar to subway surfers, there are three lanes that you can move to. 
+Modules to Install: CMU_Graphics
 
 Main Game File to Run: game.py
