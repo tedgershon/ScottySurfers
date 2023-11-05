@@ -4,6 +4,7 @@ import time
 '''
 Stuff to Fix/Add if time at end:
 - make main character delay but not ta's
+- show more directly that the character jumps over the ta
 '''
 
 def onAppStart(app):
@@ -65,7 +66,27 @@ def moveMainChar(app, direction):
         if app.posX < initX + app.laneLength:
             time.sleep(delayTime)
             app.posX += app.laneLength
+
+def jumpMainChar(app):
+    jumpPercentChoices = [1, 1, 1, 1, 1, 1, 1, 0, 0.3, 0.2, 0.5]
+    jumpPercent = random.choice(jumpPercentChoices)
+    for i in range(len(app.TAPositions)):
+        TAx, TAy = app.TAPositions[i]
+        distTAChar = app.taHeight/2 + app.charHeight/2 + 50
+        if ((TAx == app.posX) and 
+            (TAy + distTAChar>=app.posY)):
+            jumpHeight = jumpPercent*(distTAChar+app.taHeight/2+app.charHeight/2)
+            print(jumpPercent)
+            app.posY -= jumpHeight
             
+            if distance(app.posX, app.posY, TAx, TAy)<=(app.taHeight/2+app.charHeight/2):
+                app.gameOver = True
+            else:
+                app.TAPositions.pop(i)
+                app.currentTAs.pop(i)
+                app.posY = app.height-50 
+            break
+             
 
 def onKeyPress(app, key):
     if key == 'p':
@@ -79,7 +100,9 @@ def onKeyPress(app, key):
     elif key == 'left' and not app.paused:
         moveMainChar(app, key)
     elif key == 'right' and not app.paused:
-        moveMainChar(app, key)   
+        moveMainChar(app, key)
+    elif key == 'up' and not app.paused:
+        jumpMainChar(app)
         
 def onKeyRelease(app, key):
     if 'down' == key:
@@ -105,7 +128,7 @@ def onResize(app):
     pass
 
 def drawMainChar(app):
-    drawRect(app.posX, app.posY, 100, app.charHeight, align='center')
+    drawRect(app.posX, app.posY, 100, app.charHeight, align='center', fill='red')
 
 def randomNum(low, high):
     return random.randint(low, high)
@@ -148,8 +171,8 @@ def drawGameOver(app):
         drawLabel('Press "r" to restart game.', app.width/2, app.height-50, size=30, bold = True, fill = 'silver')
 
 def redrawAll(app):
-    drawMainChar(app)
     drawTA(app)
+    drawMainChar(app)
 
     drawInstructions(app)
     drawGameOver(app)
