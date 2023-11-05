@@ -74,6 +74,8 @@ def moveMainChar(app, direction):
 def jumpMainChar(app):
     jumpPercentChoices = [1, 1, 1, 1, 1, 1, 1, 0.1, 0.3, 0.2, 0.5]
     jumpPercent = random.choice(jumpPercentChoices)
+    if app.holdingDown == True:
+        jumpPercent = 1
     for i in range(len(app.TAPositions)):
         TAx, TAy = app.TAPositions[i]
         distTAChar = app.taHeight/2 + app.charHeight/2 + 50
