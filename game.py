@@ -5,14 +5,17 @@ import time
 
 def onAppStart(app):
     # Required constants
-    app.x = 0
-    app.y = 0
+    app.TAx = 0
+    app.TAy = 0
     app.width = 600
     app.height = 700
     app.laneLength = app.width/3
     restartGame(app)
     app.stepsPerSecond = 30
     app.gameOver = False
+
+    loadTAs(app)
+    loadNextTA(app)
 
 def restartGame(app):
     app.instructions = True
@@ -94,7 +97,21 @@ def drawInstructions(app):
         drawLabel("Press 'h' to open and close instructions", app.width/2, app.height-20,
                   size=20, fill='white')
 
-def gameOver(app):
+def drawTA(app):
+     drawRect(app.TAx, app.TAy, 180, 180, align='center')
+
+def loadTAs(app):
+    app.TAList = ['ta1', 'ta2', 'ta3']
+
+def loadNextTA(app):
+    app.nextTAIndex = random.randrange(len(app.TAList))
+    loadTA(app, app.nextTAIndex)
+
+def loadTA(app, taIndex):
+    app.TAx = random.randrange(3)*200+100
+    app.ta = app.TAList[taIndex]
+
+def drawGameOver(app):
     if app.gameOver == True:
         drawRect(app.width/2, app.height/2, app.width, app.height, align='center')
         drawLabel('GAME OVER', 200, 200, size = 50, bold = True, fill = 'silver', rotateAngle = 40, border = 'black')
@@ -102,6 +119,8 @@ def gameOver(app):
 
 def redrawAll(app):
     drawMainChar(app)
+    drawTA(app)
+
     drawInstructions(app)
 
 ### Main
