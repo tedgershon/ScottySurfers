@@ -22,7 +22,7 @@ def restartGame(app):
     app.posX, app.posY = app.width/2, app.height-50
     app.charHeight = 30
     app.taHeight = 40
-    app.holdingShift = False
+    app.holdingDown = False
 
 def onStep(app):
     if not app.paused:
@@ -38,7 +38,7 @@ def moveTA(app, drow):
 def moveMainChar(app, direction):
     initX = app.posX
     delayTime = abs(randomNum(-10,20))/10
-    if app.holdingShift == True:
+    if app.holdingDown == True:
         delayTime = 0
     print(delayTime)
     if direction == 'left' and app.width/2-app.laneLength < app.posX:
@@ -67,14 +67,12 @@ def onKeyPress(app, key):
         moveMainChar(app, key)   
         
 def onKeyRelease(app, key):
-    if 'shift' == key:
-        app.holdingShift = False
+    if 'down' == key:
+        app.holdingDown = False
 
 def onKeyHold(app, key):
-    if 'left' in key:
-        pass
-    if 'p' in key:
-        app.holdingP = True
+    if 'down' in key:
+        app.holdingDown = True
 
 def onMousePress(app, mouseX, mouseY):
     pass
